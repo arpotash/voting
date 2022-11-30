@@ -23,7 +23,5 @@ class VotingCreateSchema(BaseModel):
 
 
 class VotingSchema(BaseModel):
-    topic_uuid: str = fields.Field(
-        example="7405949021234727741"
-    )
+    topic_uuid: str = fields.Field(example="7405949021234727741")
     answer: str = fields.Field(example="option1")
