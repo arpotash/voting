@@ -1,0 +1,14 @@
+version: "3.10"
+services:
+  webapp:
+    build: .
+    env_file: .env
+    depends_on:
+      - redis
+    ports:
+      - "8002:8002"
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"

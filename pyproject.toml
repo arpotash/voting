@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "eazy-voting"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.88.0"
+aioredis = "^2.0.1"
+uvicorn = "^0.20.0"
+black = "^22.10.0"
+autopep8 = "^2.0.0"
+pre-commit = "^2.20.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
