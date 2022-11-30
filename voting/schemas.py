@@ -22,5 +22,4 @@ class VotingCreateSchema(pydantic.BaseModel):
 
 
 class VotingSchema(pydantic.BaseModel):
-    topic_uuid: str = pydantic.fields.Field(example="7405949021234727741")
     answer: str = pydantic.fields.Field(example="option1")

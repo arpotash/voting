@@ -10,4 +10,4 @@ RUN poetry config virtualenvs.create false \
 
 WORKDIR /voting
 COPY . /voting
-CMD python3 -m voting.api
+CMD uvicorn voting.api.main:app --host 0.0.0.0 --port 8000
