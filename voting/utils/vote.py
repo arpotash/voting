@@ -65,4 +65,3 @@ class Vote:
                 "{percent:.2f}".format(percent=votes / count_answers * 100)
             )
         return results_by_percents
-
