@@ -1,7 +1,8 @@
+import uvicorn
 from fastapi import FastAPI
 
-from app.src.routers import VOTING_ROUTER
-from app.utils.redis import RedisClient
+from voting.api.routers import VOTING_ROUTER
+from voting.utils.redis import RedisClient
 
 app = FastAPI()
 app.include_router(VOTING_ROUTER)
@@ -19,3 +20,7 @@ async def startup_event() -> None:
 async def shutdown_event() -> None:
     """Redis connection closing after finishing the application"""
     await app.state.redis._close()
+
+
+if __name__ == "__main__":
+    uvicorn.run(app)

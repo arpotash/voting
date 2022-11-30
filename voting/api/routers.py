@@ -1,9 +1,9 @@
 import fastapi
 from fastapi.responses import JSONResponse
-from app.src import schemas
-from app.utils.vote import Vote
+from voting import schemas
+from voting.utils.vote import Vote
 
-VOTING_ROUTER = fastapi.APIRouter(prefix="/api-v1", tags=["voting"])
+VOTING_ROUTER = fastapi.APIRouter(prefix="/voting-v1", tags=["voting"])
 
 
 @VOTING_ROUTER.post("/create-topic")

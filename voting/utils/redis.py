@@ -1,8 +1,8 @@
 import typing
 import aioredis
 
-from app.core.config import settings
-from app.core.logger import get_logger
+from voting.core.config import settings
+from voting.core.logger import get_logger
 
 logger = get_logger("utils")
 
@@ -15,7 +15,8 @@ class RedisClient:
     async def redis_connect(self) -> None:
         try:
             self._redis_cli = aioredis.from_url(
-                f"redis://{settings.redis_host}:{settings.redis_port}"
+                f"redis://{settings.redis_host}:{settings.redis_port}",
+                decode_responses=True
             )
         except ConnectionError as e:
             logger.error("Service is unavailable")

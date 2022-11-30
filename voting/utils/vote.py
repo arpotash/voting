@@ -1,9 +1,9 @@
 import json
 import fastapi
 
-from app.core.config import settings
-from app.core.logger import get_logger
-from app.utils.redis import RedisClient
+from voting.core.config import settings
+from voting.core.logger import get_logger
+from voting.utils.redis import RedisClient
 
 LOGGER = get_logger("utils")
 
@@ -65,3 +65,4 @@ class Vote:
                 "{percent:.2f}".format(percent=votes / count_answers * 100)
             )
         return results_by_percents
+
