@@ -1,13 +1,11 @@
 import json
-from datetime import timedelta
-
-from fastapi import HTTPException, status
+import fastapi
 
 from app.core.config import settings
 from app.core.logger import get_logger
 from app.utils.redis import RedisClient
 
-logger = get_logger("utils")
+LOGGER = get_logger("utils")
 
 
 class Vote:
@@ -30,8 +28,8 @@ class Vote:
             answer_dict = (await self.cache.get(topic_id)).decode("utf-8")
             answers_json = json.loads(answer_dict)
             if answers_json.get(answer, None) is None:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
+                raise fastapi.HTTPException(
+                    status_code=fastapi.status.HTTP_400_BAD_REQUEST,
                     detail={"error": "Incorrect answer"},
                 )
             answers_json[answer] += 1
@@ -41,9 +39,9 @@ class Vote:
                 ex=settings.redis_expiration_time,
             )
         except AttributeError as e:
-            logger.error(e)
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
+            LOGGER.error(e)
+            raise fastapi.HTTPException(
+                status_code=fastapi.status.HTTP_404_NOT_FOUND,
                 detail={"error": "Topic not found"},
             )
 
@@ -56,9 +54,9 @@ class Vote:
                 voting_results.decode("utf-8")
             ).items()
         except AttributeError as e:
-            logger.error(e)
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
+            LOGGER.error(e)
+            raise fastapi.HTTPException(
+                status_code=fastapi.status.HTTP_404_NOT_FOUND,
                 detail={"error": "Topic not found"},
             )
         count_answers = sum([value for key, value in votes_by_answer])

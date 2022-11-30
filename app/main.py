@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 
-from app.src.routers import voting_router
+from app.src.routers import VOTING_ROUTER
 from app.utils.redis import RedisClient
 
 app = FastAPI()
-app.include_router(voting_router)
+app.include_router(VOTING_ROUTER)
 
 
 @app.on_event("startup")

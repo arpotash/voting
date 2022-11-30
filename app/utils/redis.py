@@ -1,6 +1,4 @@
-from datetime import timedelta
-from typing import Any, Iterable, Optional
-
+import typing
 import aioredis
 
 from app.core.config import settings
@@ -12,7 +10,7 @@ logger = get_logger("utils")
 class RedisClient:
     def __init__(self) -> None:
         """Initializes redis client"""
-        self._redis_cli: Optional[aioredis.Redis] = None
+        self._redis_cli: typing.Optional[aioredis.Redis] = None
 
     async def redis_connect(self) -> None:
         try:
@@ -23,7 +21,7 @@ class RedisClient:
             logger.error("Service is unavailable")
 
     async def set(
-        self, key: str, value: str, ex: Optional[int] = None
+        self, key: str, value: str, ex: typing.Optional[int] = None
     ) -> None:
         """Set a new value to cash
         :param key: cache key
@@ -32,7 +30,7 @@ class RedisClient:
         """
         await self._redis_cli.set(key, value, ex=ex)
 
-    async def get(self, key: str) -> Any:
+    async def get(self, key: str) -> typing.Any:
         """Get value by key"""
         self._redis_cli.scan_iter()
         return await self._redis_cli.get(key)
