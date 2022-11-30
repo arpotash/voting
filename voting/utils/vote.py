@@ -1,4 +1,5 @@
 import json
+
 import fastapi
 
 from voting.core.config import settings
@@ -25,39 +26,35 @@ class Vote:
     async def vote(self, topic_id: str, answer: str) -> None:
         """Check topic, answer and vote for the answer if it exists"""
         try:
-            answer_dict = (await self.cache.get(topic_id)).decode("utf-8")
-            answers_json = json.loads(answer_dict)
-            if answers_json.get(answer, None) is None:
-                raise fastapi.HTTPException(
-                    status_code=fastapi.status.HTTP_400_BAD_REQUEST,
-                    detail={"error": "Incorrect answer"},
-                )
-            answers_json[answer] += 1
-            await self.cache.set(
-                topic_id,
-                json.dumps(answers_json),
-                ex=settings.redis_expiration_time,
-            )
+            answers_json = json.loads(await self.cache.get(topic_id))
         except AttributeError as e:
             LOGGER.error(e)
             raise fastapi.HTTPException(
                 status_code=fastapi.status.HTTP_404_NOT_FOUND,
-                detail={"error": "Topic not found"},
+                detail={"error": "Topic not found"}
             )
+        if answers_json.get(answer, None) is None:
+            raise fastapi.HTTPException(
+                status_code=fastapi.status.HTTP_404_NOT_FOUND,
+                detail={"error": "Incorrect answer"},
+            )
+        answers_json[answer] += 1
+        await self.cache.set(
+            topic_id,
+            json.dumps(answers_json),
+            ex=settings.redis_expiration_time,
+        )
 
     async def get_results(self, topic: str) -> dict:
         """Get statistic of the voting by answers in percents"""
         results_by_percents = {}
-        voting_results = await self.cache.get(topic)
         try:
-            votes_by_answer = json.loads(
-                voting_results.decode("utf-8")
-            ).items()
-        except AttributeError as e:
+            votes_by_answer = json.loads(await self.cache.get(topic)).items()
+        except TypeError as e:
             LOGGER.error(e)
             raise fastapi.HTTPException(
                 status_code=fastapi.status.HTTP_404_NOT_FOUND,
-                detail={"error": "Topic not found"},
+                detail={"error": "Topic not found"}
             )
         count_answers = sum([value for key, value in votes_by_answer])
         for answer, votes in votes_by_answer:
