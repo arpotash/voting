@@ -3,7 +3,7 @@ import pydantic
 
 
 class Option(pydantic.BaseModel):
-    name: str = pydantic.fields.Field(example="Yes")
+    name: str = pydantic.fields.Field(example="option1")
     count: int = pydantic.fields.Field(description="votes count", example=12, default=0)
 
 

@@ -1,8 +1,8 @@
 import typing
 import aioredis
 
-from voting.core.config import settings
-from voting.core.logger import get_logger
+from voting.settings import settings
+from voting.logger import get_logger
 
 logger = get_logger("utils")
 
@@ -33,7 +33,6 @@ class RedisClient:
 
     async def get(self, key: str) -> typing.Any:
         """Get value by key"""
-        self._redis_cli.scan_iter()
         return await self._redis_cli.get(key)
 
     async def close(self) -> None:

@@ -1,15 +1,19 @@
 version: "3.10"
 services:
-  webapp:
+  voting:
     build: .
     env_file: .env
     depends_on:
         redis:
           condition: service_healthy
+    command: python3 -m voting.api
     ports:
       - "8000:8000"
   redis:
     image: redis
+    command: redis-server --save 60 10
+    volumes:
+      - redis_persistent_data:/data/:delegated
     restart: always
     ports:
       - "6379:6379"
@@ -18,3 +22,6 @@ services:
       interval: 1s
       timeout: 3s
       retries: 3
+
+volumes:
+  redis_persistent_data:
